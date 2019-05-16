@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CockpitService } from 'src/app/services/cockpit.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-articles',
@@ -6,10 +8,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./articles.page.scss'],
 })
 export class ArticlesPage implements OnInit {
+  articles: Observable<any>;
 
-  constructor() { }
+  constructor(private cockpitService: CockpitService) { }
 
   ngOnInit() {
+    this.articles = this.cockpitService.getArticles();
   }
 
 }

@@ -31,6 +31,6 @@ export class MovieService {
   }
 
   getDetails(id: string) {
-    return this.http.get(`${this.url}?i=${encodeURI(id)}&plot=full&apikey=${this.apiKey}`)
+    return this.http.get(`${this.url}?i=${encodeURI(id)}&plot=full&apikey=${this.apiKey}`);
   }
 }
