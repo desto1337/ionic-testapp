@@ -24,6 +24,11 @@ export class CockpitService {
       map(results => {
         console.log('RAW: ', results);
         // tslint:disable-next-line:no-string-literal
+        results['entries'].forEach(entry => {
+          entry.Artikeltext = entry.Artikeltext.replace('<p>', '');
+          entry.Artikeltext = entry.Artikeltext.replace('</p>', '');
+        });
+        // tslint:disable-next-line:no-string-literal
         return results['entries'];
       })
     );

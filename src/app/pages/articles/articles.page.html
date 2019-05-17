@@ -8,5 +8,14 @@
 </ion-header>
 
 <ion-content>
-
+    <ion-card *ngFor="let article of (articles | async)">
+        <ion-card-header>
+          <ion-card-subtitle>Subtitle</ion-card-subtitle>
+          <ion-card-title>
+            Header
+            <!-- <img [src]="information.Poster" class="info-img"> -->
+          </ion-card-title>
+        </ion-card-header>
+        <ion-card-content>{{ article.Artikeltext }}</ion-card-content>
+      </ion-card>
 </ion-content>
