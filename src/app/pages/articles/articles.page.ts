@@ -8,12 +8,16 @@ import { Observable } from 'rxjs';
   styleUrls: ['./articles.page.scss'],
 })
 export class ArticlesPage implements OnInit {
-  articles: Observable<any>;
+  // articles: Observable<any>;
+  articles = null;
 
   constructor(private cockpitService: CockpitService) { }
 
   ngOnInit() {
-    this.articles = this.cockpitService.getArticles();
+    this.cockpitService.getArticles().subscribe(res => {
+      console.log('Artikel: ', res);
+      this.articles = res;
+    });
   }
 
 }

@@ -7,24 +7,24 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class CockpitService {
-  url = 'localhost:8888/cockpit';
-  apiKey = 'c95c6e3009bdd497deb5021db09041'; // Insert your generated API Key here
+  url = 'http://localhost:8888/api/collections/get/NeueCollection';
+  apiKey = 'd751f03dbe9fadce6b52368abb506c'; // Master API-Key
 
   constructor(private http: HttpClient) { }
 
-  getArticles() : Observable<any>  {
+  getArticles(): Observable<any>  {
 
     // example for collection "get"
     // fetch('/api/collections/get/posts?token=xxtokenxx')
     // .then(res=>res.json())
     // .then(res => console.log(res));
 
-    return this.http.get(`${this.url}?apikey=${this.apiKey}`)
+    return this.http.get(`${this.url}?token=${this.apiKey}`)
     .pipe(
       map(results => {
         console.log('RAW: ', results);
         // tslint:disable-next-line:no-string-literal
-        return results['Search'];
+        return results['entries'];
       })
     );
   }

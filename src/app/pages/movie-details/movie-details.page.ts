@@ -13,7 +13,7 @@ export class MovieDetailsPage implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private movieService: MovieService) { }
 
   ngOnInit() {
-    let id = this.activatedRoute.snapshot.paramMap.get('id');
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
 
     this.movieService.getDetails(id).subscribe(results => {
       console.log('details: ', results);
