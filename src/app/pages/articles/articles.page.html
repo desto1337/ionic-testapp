@@ -20,7 +20,7 @@
     </ion-card-header>
     <ion-card-content [innerHTML]="article.articletext"></ion-card-content>
     <ion-card-content style="text-align: right;">
-      {{ article.articledate }}
+      {{ article.articledate | date }}
       <br>
       <ion-chip *ngFor="let tag of article.articlekeywords" color="primary">
         <ion-label>{{ tag }}</ion-label>
