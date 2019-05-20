@@ -12,8 +12,8 @@
     <ion-card-header>
       <ion-item>
         <ion-card-title>
+          <img *ngIf="article.articleheaderfile" [src]="article.articleheaderfile" class="headerimg">
           {{ article.articleheadline }}
-          <!-- <img [src]="information.Poster" class="info-img"> -->
         </ion-card-title>
       </ion-item>
       <ion-card-subtitle>{{ article.articlesubheadline }}</ion-card-subtitle>

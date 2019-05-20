@@ -26,7 +26,17 @@ export class CockpitService {
           // tslint:disable-next-line:no-string-literal
           results['entries'].forEach(entry => {
             // to do
+            entry.articleheaderfile = 'http://localhost:8888/' + entry.articleheaderfile;
           });
+
+          // Nach Datum sortieren
+          // tslint:disable-next-line:no-string-literal
+          results['entries'].sort((a, b) => {
+            const adate = Number(new Date(a.articledate));
+            const bdate = Number(new Date(b.articledate));
+            return bdate - adate;
+          });
+
           // tslint:disable-next-line:no-string-literal
           return results['entries'];
         })
