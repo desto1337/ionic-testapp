@@ -7,12 +7,12 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class CockpitService {
-  url = 'http://localhost:8888/api/collections/get/NeueCollection';
+  url = 'http://localhost:8888/api/collections/get/articles';
   apiKey = 'd751f03dbe9fadce6b52368abb506c'; // Master API-Key
 
   constructor(private http: HttpClient) { }
 
-  getArticles(): Observable<any>  {
+  getArticles(): Observable<any> {
 
     // example for collection "get"
     // fetch('/api/collections/get/posts?token=xxtokenxx')
@@ -20,17 +20,16 @@ export class CockpitService {
     // .then(res => console.log(res));
 
     return this.http.get(`${this.url}?token=${this.apiKey}`)
-    .pipe(
-      map(results => {
-        console.log('RAW: ', results);
-        // tslint:disable-next-line:no-string-literal
-        results['entries'].forEach(entry => {
-          entry.Artikeltext = entry.Artikeltext.replace('<p>', '');
-          entry.Artikeltext = entry.Artikeltext.replace('</p>', '');
-        });
-        // tslint:disable-next-line:no-string-literal
-        return results['entries'];
-      })
-    );
+      .pipe(
+        map(results => {
+          console.log('RAW: ', results);
+          // tslint:disable-next-line:no-string-literal
+          results['entries'].forEach(entry => {
+            // to do
+          });
+          // tslint:disable-next-line:no-string-literal
+          return results['entries'];
+        })
+      );
   }
 }

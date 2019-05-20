@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/"></ion-back-button>
     </ion-buttons>
@@ -8,14 +8,23 @@
 </ion-header>
 
 <ion-content>
-    <ion-card *ngFor="let article of (articles | async)">
-        <ion-card-header>
-          <ion-card-subtitle>Subtitle</ion-card-subtitle>
-          <ion-card-title>
-            Header
-            <!-- <img [src]="information.Poster" class="info-img"> -->
-          </ion-card-title>
-        </ion-card-header>
-        <ion-card-content>{{ article.Artikeltext }}</ion-card-content>
-      </ion-card>
+  <ion-card *ngFor="let article of (articles | async)">
+    <ion-card-header>
+      <ion-item>
+        <ion-card-title>
+          {{ article.articleheadline }}
+          <!-- <img [src]="information.Poster" class="info-img"> -->
+        </ion-card-title>
+      </ion-item>
+      <ion-card-subtitle>{{ article.articlesubheadline }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content [innerHTML]="article.articletext"></ion-card-content>
+    <ion-card-content style="text-align: right;">
+      {{ article.articledate }}
+      <br>
+      <ion-chip *ngFor="let tag of article.articlekeywords" color="primary">
+        <ion-label>{{ tag }}</ion-label>
+      </ion-chip>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
