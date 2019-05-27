@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="(articles | async); else noinfo">
   <ion-card *ngFor="let article of (articles | async)">
     <ion-card-header>
       <ion-item>
@@ -28,3 +28,16 @@
     </ion-card-content>
   </ion-card>
 </ion-content>
+
+<ng-template #noinfo>
+  <ion-content>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Ein Problem ist aufgetreten</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+          Das CMS-System ist leider nicht erreichbar :-(
+      </ion-card-content>
+    </ion-card>
+  </ion-content>
+</ng-template>
