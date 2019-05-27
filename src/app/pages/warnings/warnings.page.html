@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>latest warnings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card *ngFor="let warning of (warnings | async)">
+    <div *ngFor="let info of warning.info">
+      <ion-card-header>
+        <ion-item>
+          <ion-icon slot="start" *ngIf="info.event == 'Gefahreninformation'" name="alert"></ion-icon>
+          <ion-icon slot="start" *ngIf="info.event == 'Hochwasserinformation'" name="water"></ion-icon>
+          <ion-icon slot="start" *ngIf="info.event == 'DAUERREGEN'" name="thunderstorm"></ion-icon>
+          <ion-card-title>{{ info.headline }}</ion-card-title>
+        </ion-item>
+        <ion-card-subtitle>{{ info.event }}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content [innerHTML]="info.description"></ion-card-content>
+      <ion-card-content style="text-align: right;">
+        {{ warning.sent | date }}
+        <br>
+      </ion-card-content>
+    </div>
+  </ion-card>
+</ion-content>
