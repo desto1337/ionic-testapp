@@ -21,7 +21,7 @@
       </ion-card-header>
       <ion-card-content [innerHTML]="info.description"></ion-card-content>
       <ion-card-content style="text-align: right;">
-        {{ warning.sent | date }}
+        Datum: {{ warning.sent | date: 'dd.MM.y' }}
         <br>
       </ion-card-content>
     </div>
