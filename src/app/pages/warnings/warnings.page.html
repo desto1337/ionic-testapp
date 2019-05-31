@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="warningdata; else nowarnings">
+<ion-content *ngIf="(dangerWarnings | async); else nowarnings">
   <ion-card *ngFor="let warning of warningdata">
     <ion-card-header>
       <ion-item>
