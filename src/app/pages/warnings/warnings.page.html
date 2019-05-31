@@ -7,7 +7,16 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="(dangerWarnings | async); else nowarnings">
+<ion-content *ngIf="(warnings | async); else nowarnings">
+  <ion-item>
+    <ion-label>Category</ion-label>
+    <ion-select [(ngModel)]="warningType" (ionChange)="selectedCategory($event)">
+      <ion-select-option value="Gefahrenmeldung">Gefahreninformationen</ion-select-option>
+      <ion-select-option value="Flut">Hochwassermeldungen</ion-select-option>
+      <ion-select-option value="Unwetter">Unwettermeldungen</ion-select-option>
+    </ion-select>
+  </ion-item>
+
   <ion-card *ngFor="let warning of warningdata">
     <ion-card-header>
       <ion-item>

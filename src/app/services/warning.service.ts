@@ -14,7 +14,7 @@ export enum WarningType {
 export class WarningService {
   urlDangerWarnings = 'http://warnung.bund.de/bbk.mowas/gefahrendurchsagen.json';
   urlStormWarnings = 'http://warnung.bund.de/bbk.dwd/unwetter.json';
-  urlFloodWarnings = 'http://warnung.bund.de/bbk.wsv/hochwasser.json';
+  urlFloodWarnings = 'http://warnung.bund.de/bbk.lhp/hochwassermeldungen.json';
 
   constructor(private http: HttpClient) { }
 

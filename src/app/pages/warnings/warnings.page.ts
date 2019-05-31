@@ -17,9 +17,7 @@ export interface Warning {
 
 export class WarningsPage implements OnInit {
 
-  dangerWarnings: Observable<any>;  // Gefahrenmeldungen
-  stormWarnings: Observable<any>; // Unwetter
-  floodWarnings: Observable<any>; // Hochwasser
+  warnings: Observable<any>;  // Gefahrenmeldungen
   warningdata: Warning[] = new Array(); // Auszugebendes Array
   warningType: WarningType;
 
@@ -30,8 +28,8 @@ export class WarningsPage implements OnInit {
   ngOnInit() {
     this.warningType = WarningType.danger;
 
-    this.dangerWarnings = this.warningService.getDangerWarnings(); // delivers an observable
-    this.dangerWarnings.subscribe(data => {
+    this.warnings = this.warningService.getDangerWarnings(); // delivers an observable
+    this.warnings.subscribe(data => {
       console.log('RAW-Daten (Gefahrenmeldungen): ', data);
 
       this.warningdata = this.fillInOutputFormat(data, this.warningType);
@@ -48,9 +46,9 @@ export class WarningsPage implements OnInit {
 
     switch (warningType) {
       case WarningType.danger: {
-        this.dangerWarnings = this.warningService.getDangerWarnings();
-        this.dangerWarnings.subscribe(data => {
-          console.log('Danger-RAW-Data: ', data);
+        this.warnings = this.warningService.getDangerWarnings();
+        this.warnings.subscribe(data => {
+          console.log('RAW-Daten (Gefahrenmeldungen): ', data);
 
           warningData = this.fillInOutputFormat(data, this.warningType);
           this.sortingArrayByDateDescending(warningData);
@@ -60,14 +58,36 @@ export class WarningsPage implements OnInit {
         break;
       }
       case WarningType.storm: {
+        this.warnings = this.warningService.getStormWarnings();
+        this.warnings.subscribe(data => {
+          console.log('RAW-Daten (Unwetterwarnungen): ', data);
+
+          warningData = this.fillInOutputFormat(data, this.warningType);
+          this.sortingArrayByDateDescending(warningData);
+
+          console.log('warningdata: ', warningData);
+        });
         break;
       }
       case WarningType.flood: {
+        this.warnings = this.warningService.getFloodWarnings();
+        this.warnings.subscribe(data => {
+          console.log('RAW-Daten (Hochwasserwarnungen): ', data);
+
+          warningData = this.fillInOutputFormat(data, this.warningType);
+          this.sortingArrayByDateDescending(warningData);
+
+          console.log('warningdata: ', warningData);
+        });
         break;
       }
     }
-
     return warningData;
+  }
+
+  selectedCategory() {
+    this.warningdata = this.resolveServiceData(this.warningType);
+    console.log('NOCHMAL: ', this.warningdata);
   }
 
   /* Bereitet vorliegende Response-Daten auf definierte Warning-Ausgabenformat um */
@@ -78,6 +98,17 @@ export class WarningsPage implements OnInit {
     for (const warningItem of subdata) {
       switch (category) {
         case WarningType.danger: {
+          const warningData: Warning = {
+            date: warningItem.sent,
+            type: warningItem.info[0].event,
+            headline: warningItem.info[0].headline,
+            warninghtml: warningItem.info[0].description,
+          };
+
+          outputdata.push(warningData);
+          break;
+        }
+        case WarningType.flood: {
           const warningData: Warning = {
             date: warningItem.sent,
             type: warningItem.info[0].event,
