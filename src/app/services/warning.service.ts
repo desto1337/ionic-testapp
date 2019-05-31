@@ -2,6 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
+export enum WarningType {
+  danger = 'Gefahrenmeldung',
+  test = 'Test'
+}
+
 @Injectable({
   providedIn: 'root'
 })

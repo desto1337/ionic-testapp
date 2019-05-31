@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { WarningService } from 'src/app/services/warning.service';
+import { WarningService, WarningType } from 'src/app/services/warning.service';
 
 export interface Warning {
   date: string;
@@ -19,39 +19,46 @@ export class WarningsPage implements OnInit {
 
   warnings: Observable<any>;
   warningdata: Warning[] = new Array();
+  warningType: WarningType;
 
   constructor(private warningService: WarningService) { }
 
   ngOnInit() {
+    this.warningType = WarningType.danger;
+
     this.warnings = this.warningService.getWarnings(); // delivers an observable
     this.warnings.subscribe(data => {
       console.log('RAW: ', data);
 
-      // const dataArray = [];
-      // konvertiere Object-Response in Array
-      // Object.keys(data).map((key) => {
-      //   dataArray.push({ [key]: data[key] });
-      //   return dataArray;
-      // });
-
-      // console.log('dataArray: ', dataArray);
-
-      for (const warningItem of data) {
-        // console.log(warningItem);
-
-        const warningData: Warning = {
-          date: warningItem.sent,
-          type: warningItem.info[0].event,
-          headline: warningItem.info[0].headline,
-          warninghtml: warningItem.info[0].description,
-        };
-        this.warningdata.push(warningData);
-      }
-
-      // this.warningdata = data;
+      this.warningdata = this.fillInOutputFormat(data, this.warningType);
       this.sortingArrayByDateDescending(this.warningdata);
+
       console.log('warningdata: ', this.warningdata);
     });
+  }
+
+  fillInOutputFormat(subdata: any, category: WarningType = WarningType.danger) {
+    const outputdata: Warning[] = new Array();
+
+    for (const warningItem of subdata) {
+      switch (category) {
+        case WarningType.danger: {
+          const warningData: Warning = {
+            date: warningItem.sent,
+            type: warningItem.info[0].event,
+            headline: warningItem.info[0].headline,
+            warninghtml: warningItem.info[0].description,
+          };
+
+          outputdata.push(warningData);
+          break;
+        }
+        default: {
+          return null;
+        }
+      }
+    }
+    return outputdata;
   }
 
   sortingArrayByDateDescending(array: Warning[]) {
