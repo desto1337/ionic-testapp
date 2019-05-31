@@ -8,35 +8,33 @@
 </ion-header>
 
 <ion-content *ngIf="(warnings | async); else nowarnings">
-  <ion-card *ngFor="let warning of (warnings | async)">
-    <div *ngFor="let info of warning.info">
-      <ion-card-header>
-        <ion-item>
-          <ion-icon slot="start" *ngIf="info.event == 'Gefahreninformation'" name="alert"></ion-icon>
-          <ion-icon slot="start" *ngIf="info.event == 'Hochwasserinformation'" name="water"></ion-icon>
-          <ion-icon slot="start" *ngIf="info.event == 'DAUERREGEN'" name="thunderstorm"></ion-icon>
-          <ion-card-title>{{ info.headline }}</ion-card-title>
-        </ion-item>
-        <ion-card-subtitle>{{ info.event }}</ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content [innerHTML]="info.description"></ion-card-content>
-      <ion-card-content style="text-align: right;">
-        Datum: {{ warning.sent | date: 'dd.MM.y' }}
-        <br>
-      </ion-card-content>
-    </div>
+  <ion-card *ngFor="let warning of warningdata">
+    <ion-card-header>
+      <ion-item>
+        <ion-icon slot="start" *ngIf="warning.type == 'Gefahreninformation'" name="alert"></ion-icon>
+        <ion-icon slot="start" *ngIf="warning.type == 'Hochwasserinformation'" name="water"></ion-icon>
+        <ion-icon slot="start" *ngIf="warning.type == 'DAUERREGEN'" name="thunderstorm"></ion-icon>
+        <ion-card-title>{{ warning.headline }}</ion-card-title>
+      </ion-item>
+      <ion-card-subtitle>{{ warning.type }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content [innerHTML]="warning.warninghtml"></ion-card-content>
+    <ion-card-content style="text-align: right;">
+      Datum: {{ warning.date | date: 'dd.MM.y' }}
+      <br>
+    </ion-card-content>
   </ion-card>
 </ion-content>
 
 <ng-template #nowarnings>
-    <ion-content>
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>Hurra! :-)</ion-card-title>
-        </ion-card-header>
-        <ion-card-content>
-            Es liegen aktuell keine Gefahrenmeldungen vor!
-        </ion-card-content>
-      </ion-card>
-    </ion-content>
-  </ng-template>
+  <ion-content>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Hurra! :-)</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        Es liegen aktuell keine Gefahrenmeldungen vor!
+      </ion-card-content>
+    </ion-card>
+  </ion-content>
+</ng-template>
