@@ -40,20 +40,18 @@ export class WarningsPage implements OnInit {
   }
 
   /* Webservice-Aufruf. Passend zum angegebenen Meldungstypen wird die passende Webservice Methode aufgerufen und verarbeitet. */
-  resolveServiceData(warningType: WarningType) {
+  /* Dabei wird this.warningdata bereits mit neuen Datensätzen gefüllt */
+  async resolveServiceData() {
 
-    let warningData: Warning[] = new Array();
-
-    switch (warningType) {
+    switch (this.warningType) {
       case WarningType.danger: {
         this.warnings = this.warningService.getDangerWarnings();
         this.warnings.subscribe(data => {
           console.log('RAW-Daten (Gefahrenmeldungen): ', data);
+          this.warningdata = this.fillInOutputFormat(data, this.warningType);
+          this.sortingArrayByDateDescending(this.warningdata);
 
-          warningData = this.fillInOutputFormat(data, this.warningType);
-          this.sortingArrayByDateDescending(warningData);
-
-          console.log('warningdata: ', warningData);
+          console.log('warningdata: ', this.warningdata);
         });
         break;
       }
@@ -62,10 +60,10 @@ export class WarningsPage implements OnInit {
         this.warnings.subscribe(data => {
           console.log('RAW-Daten (Unwetterwarnungen): ', data);
 
-          warningData = this.fillInOutputFormat(data, this.warningType);
-          this.sortingArrayByDateDescending(warningData);
+          this.warningdata = this.fillInOutputFormat(data, this.warningType);
+          this.sortingArrayByDateDescending(this.warningdata);
 
-          console.log('warningdata: ', warningData);
+          console.log('warningdata: ', this.warningdata);
         });
         break;
       }
@@ -74,20 +72,18 @@ export class WarningsPage implements OnInit {
         this.warnings.subscribe(data => {
           console.log('RAW-Daten (Hochwasserwarnungen): ', data);
 
-          warningData = this.fillInOutputFormat(data, this.warningType);
-          this.sortingArrayByDateDescending(warningData);
+          this.warningdata = this.fillInOutputFormat(data, this.warningType);
+          this.sortingArrayByDateDescending(this.warningdata);
 
-          console.log('warningdata: ', warningData);
+          console.log('warningdata: ', this.warningdata);
         });
         break;
       }
     }
-    return warningData;
   }
 
   selectedCategory() {
-    this.warningdata = this.resolveServiceData(this.warningType);
-    console.log('NOCHMAL: ', this.warningdata);
+    this.resolveServiceData();
   }
 
   /* Bereitet vorliegende Response-Daten auf definierte Warning-Ausgabenformat um */
