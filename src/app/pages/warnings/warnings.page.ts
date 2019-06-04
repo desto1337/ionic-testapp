@@ -122,6 +122,19 @@ export class WarningsPage implements OnInit {
           outputdata.push(warningData);
           break;
         }
+        case WarningType.storm: {
+          const warningData: Warning = {
+            date: warningItem.sent,
+            type: warningItem.info[0].event,
+            regions: warningItem.info[0].area[0].areaDesc,
+            headline: warningItem.info[0].headline,
+            warninghtml: warningItem.info[0].description,
+            source: warningItem.info[0].contact,
+          };
+
+          outputdata.push(warningData);
+          break;
+        }
         default: {
           return null;
         }

@@ -38,13 +38,16 @@
       </ion-item>
     </ion-card-content>
     <ion-item lines="none">
-      <ion-card-content [innerHTML]="warning.warninghtml"></ion-card-content>
+      <ion-card-content color="secondary" [innerHTML]="warning.warninghtml">
+      </ion-card-content>
     </ion-item>
-    <ion-card-content *ngIf="warning.source && warning.moreinfosHtml">
+    <ion-card-content *ngIf="warning.source">
       <ion-item lines="none" slot="start">
         <ion-label slot="start">Quelle: </ion-label>
         <ion-label text-wrap>{{ warning.source }}</ion-label>
       </ion-item>
+    </ion-card-content>
+    <ion-card-content *ngIf="warning.moreinfosHtml">
       <ion-item lines="none" slot="start">
         <ion-label slot="start">Weitere Informationen unter: </ion-label>
         <div [innerHTML]="warning.moreinfosHtml"></div>
