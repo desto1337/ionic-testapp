@@ -5,8 +5,11 @@ import { WarningService, WarningType } from 'src/app/services/warning.service';
 export interface Warning {
   date: string;
   type: string;
+  regions: string;
   headline: string;
   warninghtml: string;
+  source?: string;
+  moreinfosHtml?: string;
 }
 
 @Component({
@@ -97,6 +100,7 @@ export class WarningsPage implements OnInit {
           const warningData: Warning = {
             date: warningItem.sent,
             type: warningItem.info[0].event,
+            regions: warningItem.info[0].area[0].areaDesc,
             headline: warningItem.info[0].headline,
             warninghtml: warningItem.info[0].description,
           };
@@ -108,8 +112,11 @@ export class WarningsPage implements OnInit {
           const warningData: Warning = {
             date: warningItem.sent,
             type: warningItem.info[0].event,
+            regions: warningItem.info[0].area[0].areaDesc,
             headline: warningItem.info[0].headline,
             warninghtml: warningItem.info[0].description,
+            source: warningItem.info[0].contact,
+            moreinfosHtml: warningItem.info[0].web,
           };
 
           outputdata.push(warningData);
