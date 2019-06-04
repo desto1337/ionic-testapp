@@ -20,35 +20,34 @@
   <ion-card *ngFor="let warning of warningdata">
     <ion-card-header>
       <ion-item>
-        <ion-card-title>{{ warning.headline }}</ion-card-title>
+        <ion-card-title>{{ warning.type }}</ion-card-title>
         <ion-icon slot="end" *ngIf="warning.type == 'Gefahreninformation'" name="alert"></ion-icon>
         <ion-icon slot="end" *ngIf="warning.type == 'Hochwasserinformation'" name="water"></ion-icon>
-        <ion-icon slot="end" *ngIf="warning.type == 'DAUERREGEN'" name="thunderstorm"></ion-icon>
+        <ion-icon slot="end" *ngIf="warning.type == 'STARKES GEWITTER'" name="thunderstorm"></ion-icon>
       </ion-item>
     </ion-card-header>
     <ion-card-content>
       <ion-item lines="none" slot="start">
-        <ion-label slot="start">Betroffene Region(en):</ion-label>
+        <ion-label slot="start">Region(en):</ion-label>
         <ion-label text-wrap>{{ warning.regions }}</ion-label>
       </ion-item>
     </ion-card-content>
     <ion-card-content>
       <ion-item lines="none">
-        <ion-label>{{ warning.type }}:</ion-label>
+        <ion-label style="font-weight: bold;" text-wrap>{{ warning.headline }}:</ion-label>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-text [innerHTML]="warning.warninghtml"></ion-text>
       </ion-item>
     </ion-card-content>
-    <ion-item lines="none">
-      <ion-card-content color="secondary" [innerHTML]="warning.warninghtml">
-      </ion-card-content>
-    </ion-item>
     <ion-card-content *ngIf="warning.source">
-      <ion-item lines="none" slot="start">
+      <ion-item lines="none">
         <ion-label slot="start">Quelle: </ion-label>
         <ion-label text-wrap>{{ warning.source }}</ion-label>
       </ion-item>
     </ion-card-content>
     <ion-card-content *ngIf="warning.moreinfosHtml">
-      <ion-item lines="none" slot="start">
+      <ion-item lines="none">
         <ion-label slot="start">Weitere Informationen unter: </ion-label>
         <div [innerHTML]="warning.moreinfosHtml"></div>
       </ion-item>
