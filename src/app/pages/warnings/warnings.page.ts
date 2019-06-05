@@ -23,6 +23,9 @@ export class WarningsPage implements OnInit {
   warnings: Observable<any>;  // Gefahrenmeldungen
   warningdata: Warning[] = new Array(); // Auszugebendes Array
   warningType: WarningType;
+  dangerToggleSet = true;
+  floodToggleSet = false;
+  stormToggleSet = false;
 
   /* Initialisiert den zugrundeliegenden Webservice mit Warnungsmeldungen */
   constructor(private warningService: WarningService) { }
@@ -44,7 +47,7 @@ export class WarningsPage implements OnInit {
 
   /* Webservice-Aufruf. Passend zum angegebenen Meldungstypen wird die passende Webservice Methode aufgerufen und verarbeitet. */
   /* Dabei wird this.warningdata bereits mit neuen Datensätzen gefüllt */
-  async resolveServiceData() {
+  resolveServiceData() {
 
     switch (this.warningType) {
       case WarningType.danger: {

@@ -8,6 +8,24 @@
 </ion-header>
 
 <ion-content *ngIf="(warnings | async); else nowarnings">
+
+  <ion-list>
+    <ion-item>
+      <ion-label>Gefahreninformationen</ion-label>
+      <ion-toggle checked [(ngModel)]="dangerToggleSet"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Hochwassermeldungen</ion-label>
+      <ion-toggle [(ngModel)]="floodToggleSet"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Unwettermeldungen</ion-label>
+      <ion-toggle [(ngModel)]="stormToggleSet"></ion-toggle>
+    </ion-item>
+  </ion-list>
+
   <ion-item>
     <ion-label>Category</ion-label>
     <ion-select [(ngModel)]="warningType" (ionChange)="selectedCategory($event)">
