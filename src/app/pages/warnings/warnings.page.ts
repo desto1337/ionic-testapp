@@ -49,42 +49,45 @@ export class WarningsPage implements OnInit {
   /* Dabei wird this.warningdata bereits mit neuen Datensätzen gefüllt */
   resolveServiceData() {
 
-    switch (this.warningType) {
-      case WarningType.danger: {
-        this.warnings = this.warningService.getDangerWarnings();
-        this.warnings.subscribe(data => {
-          console.log('RAW-Daten (Gefahrenmeldungen): ', data);
-          this.warningdata = this.fillInOutputFormat(data, this.warningType);
-          this.sortingArrayByDateDescending(this.warningdata);
+    this.warningdata = [];
 
-          console.log('warningdata: ', this.warningdata);
-        });
-        break;
-      }
-      case WarningType.storm: {
-        this.warnings = this.warningService.getStormWarnings();
-        this.warnings.subscribe(data => {
-          console.log('RAW-Daten (Unwetterwarnungen): ', data);
+    if (this.dangerToggleSet) {
+      this.warnings = this.warningService.getDangerWarnings();
+      this.warnings.subscribe(data => {
+        console.log('RAW-Daten (Gefahrenmeldungen): ', data);
 
-          this.warningdata = this.fillInOutputFormat(data, this.warningType);
-          this.sortingArrayByDateDescending(this.warningdata);
+        const warningData: Warning[] = this.fillInOutputFormat(data, WarningType.danger);
+        this.warningdata = this.warningdata.concat(warningData);
+        this.warningdata = this.sortingArrayByDateDescending(this.warningdata);
 
-          console.log('warningdata: ', this.warningdata);
-        });
-        break;
-      }
-      case WarningType.flood: {
-        this.warnings = this.warningService.getFloodWarnings();
-        this.warnings.subscribe(data => {
-          console.log('RAW-Daten (Hochwasserwarnungen): ', data);
+        console.log('warningdata: ', this.warningdata);
+      });
+    }
 
-          this.warningdata = this.fillInOutputFormat(data, this.warningType);
-          this.sortingArrayByDateDescending(this.warningdata);
+    if (this.floodToggleSet) {
+      this.warnings = this.warningService.getFloodWarnings();
+      this.warnings.subscribe(data => {
+        console.log('RAW-Daten (Hochwasserwarnungen): ', data);
 
-          console.log('warningdata: ', this.warningdata);
-        });
-        break;
-      }
+        const warningData: Warning[] = this.fillInOutputFormat(data, WarningType.flood);
+        this.warningdata = this.warningdata.concat(warningData);
+        this.warningdata = this.sortingArrayByDateDescending(this.warningdata);
+
+        console.log('warningdata: ', this.warningdata);
+      });
+    }
+
+    if (this.stormToggleSet) {
+      this.warnings = this.warningService.getStormWarnings();
+      this.warnings.subscribe(data => {
+        console.log('RAW-Daten (Unwetterwarnungen): ', data);
+
+        const warningData: Warning[] = this.fillInOutputFormat(data, WarningType.storm);
+        this.warningdata = this.warningdata.concat(warningData);
+        this.warningdata = this.sortingArrayByDateDescending(this.warningdata);
+
+        console.log('warningdata: ', this.warningdata);
+      });
     }
   }
 

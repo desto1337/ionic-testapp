@@ -7,77 +7,148 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="(warnings | async); else nowarnings">
-
+<ion-content>
   <ion-list>
     <ion-item>
       <ion-label>Gefahreninformationen</ion-label>
-      <ion-toggle checked [(ngModel)]="dangerToggleSet"></ion-toggle>
+      <ion-toggle checked [(ngModel)]="dangerToggleSet" (ionChange)="resolveServiceData($event)"></ion-toggle>
     </ion-item>
 
     <ion-item>
       <ion-label>Hochwassermeldungen</ion-label>
-      <ion-toggle [(ngModel)]="floodToggleSet"></ion-toggle>
+      <ion-toggle [(ngModel)]="floodToggleSet" (ionChange)="resolveServiceData($event)"></ion-toggle>
     </ion-item>
 
     <ion-item>
       <ion-label>Unwettermeldungen</ion-label>
-      <ion-toggle [(ngModel)]="stormToggleSet"></ion-toggle>
+      <ion-toggle [(ngModel)]="stormToggleSet" (ionChange)="resolveServiceData($event)"></ion-toggle>
     </ion-item>
   </ion-list>
 
-  <ion-item>
-    <ion-label>Category</ion-label>
-    <ion-select [(ngModel)]="warningType" (ionChange)="selectedCategory($event)">
-      <ion-select-option value="Gefahrenmeldung">Gefahreninformationen</ion-select-option>
-      <ion-select-option value="Flut">Hochwassermeldungen</ion-select-option>
-      <ion-select-option value="Unwetter">Unwettermeldungen</ion-select-option>
-    </ion-select>
-  </ion-item>
+  <div *ngIf="warningdata.length > 0">
+    <ion-card *ngFor="let warning of warningdata">
+      <ion-card-header>
+        <ion-item>
+          <ion-icon slot="end" *ngIf="warning.type == 'Gefahreninformation' || warning.type == 'Gefahrenmitteilung'" name="alert" color="danger"></ion-icon>
+          <ion-icon slot="end" *ngIf="warning.type == 'Hochwasserinformation'" name="water" color="primary"></ion-icon>
+          <ion-icon slot="end" *ngIf="warning.type == 'STARKES GEWITTER'" name="thunderstorm" color="warning">
+          </ion-icon>
+          <ion-card-title>{{ warning.type }}</ion-card-title>
+        </ion-item>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item lines="none" slot="start">
+          <ion-label slot="start">Region(en):</ion-label>
+          <ion-label text-wrap>{{ warning.regions }}</ion-label>
+        </ion-item>
+      </ion-card-content>
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-label style="font-weight: bold;" text-wrap>{{ warning.headline }}:</ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-text [innerHTML]="warning.warninghtml"></ion-text>
+        </ion-item>
+      </ion-card-content>
+      <ion-card-content *ngIf="warning.source">
+        <ion-item lines="none">
+          <ion-label slot="start">Quelle: </ion-label>
+          <ion-label text-wrap>{{ warning.source }}</ion-label>
+        </ion-item>
+      </ion-card-content>
+      <ion-card-content *ngIf="warning.moreinfosHtml">
+        <ion-item lines="none">
+          <ion-label slot="start">Weitere Informationen unter: </ion-label>
+          <div [innerHTML]="warning.moreinfosHtml"></div>
+        </ion-item>
+      </ion-card-content>
+      <ion-card-content style="text-align: right;">
+        Datum: {{ warning.date | date: 'dd.MM.y' }}
+        <br>
+      </ion-card-content>
+    </ion-card>
+  </div>
 
-  <ion-card *ngFor="let warning of warningdata">
-    <ion-card-header>
-      <ion-item>
-        <ion-card-title>{{ warning.type }}</ion-card-title>
-        <ion-icon slot="end" *ngIf="warning.type == 'Gefahreninformation'" name="alert"></ion-icon>
-        <ion-icon slot="end" *ngIf="warning.type == 'Hochwasserinformation'" name="water"></ion-icon>
-        <ion-icon slot="end" *ngIf="warning.type == 'STARKES GEWITTER'" name="thunderstorm"></ion-icon>
-      </ion-item>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-item lines="none" slot="start">
-        <ion-label slot="start">Region(en):</ion-label>
-        <ion-label text-wrap>{{ warning.regions }}</ion-label>
-      </ion-item>
-    </ion-card-content>
-    <ion-card-content>
-      <ion-item lines="none">
-        <ion-label style="font-weight: bold;" text-wrap>{{ warning.headline }}:</ion-label>
-      </ion-item>
-      <ion-item lines="none">
-        <ion-text [innerHTML]="warning.warninghtml"></ion-text>
-      </ion-item>
-    </ion-card-content>
-    <ion-card-content *ngIf="warning.source">
-      <ion-item lines="none">
-        <ion-label slot="start">Quelle: </ion-label>
-        <ion-label text-wrap>{{ warning.source }}</ion-label>
-      </ion-item>
-    </ion-card-content>
-    <ion-card-content *ngIf="warning.moreinfosHtml">
-      <ion-item lines="none">
-        <ion-label slot="start">Weitere Informationen unter: </ion-label>
-        <div [innerHTML]="warning.moreinfosHtml"></div>
-      </ion-item>
-    </ion-card-content>
-    <ion-card-content style="text-align: right;">
-      Datum: {{ warning.date | date: 'dd.MM.y' }}
-      <br>
-    </ion-card-content>
-  </ion-card>
+  <!-- Skeleton screen: Keine Contentdarstellung -->
+  <div *ngIf="warningdata.length == 0">
+    <ion-card>
+      <ion-card-header>
+        <ion-item>
+          <ion-skeleton-text animated style="width: 65%"></ion-skeleton-text>
+        </ion-item>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item lines="none" slot="start">
+          <ion-label slot="start">
+            <ion-skeleton-text animated style="width: 45%"></ion-skeleton-text>
+          </ion-label>
+          <ion-label>
+            <ion-skeleton-text animated style="width: 75%"></ion-skeleton-text>
+          </ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label>
+            <ion-skeleton-text animated style="width: 75%"></ion-skeleton-text>
+          </ion-label>
+        </ion-item>
+        <br>
+        <ion-item lines="none">
+          <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-skeleton-text animated style="width: 88%"></ion-skeleton-text>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label slot="start">
+            <ion-skeleton-text animated style="width: 35%"></ion-skeleton-text>
+          </ion-label>
+          <ion-label>
+            <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+    <ion-card>
+      <ion-card-header>
+        <ion-item>
+          <ion-skeleton-text animated style="width: 65%"></ion-skeleton-text>
+        </ion-item>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item lines="none" slot="start">
+          <ion-label slot="start">
+            <ion-skeleton-text animated style="width: 45%"></ion-skeleton-text>
+          </ion-label>
+          <ion-label>
+            <ion-skeleton-text animated style="width: 75%"></ion-skeleton-text>
+          </ion-label>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label>
+            <ion-skeleton-text animated style="width: 75%"></ion-skeleton-text>
+          </ion-label>
+        </ion-item>
+        <br>
+        <ion-item lines="none">
+          <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-skeleton-text animated style="width: 88%"></ion-skeleton-text>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-label slot="start">
+            <ion-skeleton-text animated style="width: 35%"></ion-skeleton-text>
+          </ion-label>
+          <ion-label>
+            <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
 
-<ng-template #nowarnings>
+<!-- <ng-template #nowarnings>
   <ion-content>
     <ion-card>
       <ion-card-header>
@@ -88,4 +159,4 @@
       </ion-card-content>
     </ion-card>
   </ion-content>
-</ng-template>
+</ng-template> -->
