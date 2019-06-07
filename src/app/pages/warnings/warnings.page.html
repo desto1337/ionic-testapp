@@ -29,7 +29,8 @@
     <ion-card *ngFor="let warning of warningdata">
       <ion-card-header>
         <ion-item>
-          <ion-icon slot="end" *ngIf="warning.type == 'Gefahreninformation' || warning.type == 'Gefahrenmitteilung'" name="alert" color="danger"></ion-icon>
+          <ion-icon slot="end" *ngIf="warning.type == 'Gefahreninformation' || warning.type == 'Gefahrenmitteilung'"
+            name="alert" color="danger"></ion-icon>
           <ion-icon slot="end" *ngIf="warning.type == 'Hochwasserinformation'" name="water" color="primary"></ion-icon>
           <ion-icon slot="end" *ngIf="warning.type == 'STARKES GEWITTER'" name="thunderstorm" color="warning">
           </ion-icon>
@@ -69,8 +70,25 @@
     </ion-card>
   </div>
 
-  <!-- Skeleton screen: Keine Contentdarstellung -->
-  <div *ngIf="warningdata.length == 0">
+  <!-- Dummy: Wenn keine Ergebnismenge vorhanden -->
+  <div *ngIf="searchEnded == true && warningdata.length == 0">
+    <ion-card>
+      <ion-card-header>
+        <ion-item>
+          <ion-card-title>Hurra! :-)</ion-card-title>
+        </ion-item>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item lines="none">
+          <ion-text>Es liegen zur Selektion aktuell keine Meldungen vor.</ion-text>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+
+  <!-- Skeleton screen: Keine Contentdarstellung, noch am Suchen -->
+  <div *ngIf="warningdata.length == 0 && searchEnded == false">
     <ion-card>
       <ion-card-header>
         <ion-item>

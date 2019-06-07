@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { WarningService, WarningType } from 'src/app/services/warning.service';
+import { ToastController } from '@ionic/angular';
+import { PRIMARY_OUTLET } from '@angular/router';
 
 export interface Warning {
   date: string;
@@ -26,9 +28,11 @@ export class WarningsPage implements OnInit {
   dangerToggleSet = true;
   floodToggleSet = false;
   stormToggleSet = false;
+  searchEnded = false;
+  toast: any;
 
   /* Initialisiert den zugrundeliegenden Webservice mit Warnungsmeldungen */
-  constructor(private warningService: WarningService) { }
+  constructor(private warningService: WarningService, private toastController: ToastController) { }
 
   /* Bei Seiteninitialisierung werden erstmal nur die Gefahrenmeldungen abgerufen, verarbeitet und angezeigt */
   ngOnInit() {
@@ -50,6 +54,13 @@ export class WarningsPage implements OnInit {
   resolveServiceData() {
 
     this.warningdata = [];
+    this.searchEnded = false; // Vor der Suche initialisieren
+
+    if (!this.dangerToggleSet && !this.floodToggleSet && !this.stormToggleSet) {
+      // Es wurde keine Selektion getroffen
+      this.showToast('Sie haben keine Selektion getroffen');
+      return;
+    }
 
     if (this.dangerToggleSet) {
       this.warnings = this.warningService.getDangerWarnings();
@@ -62,6 +73,7 @@ export class WarningsPage implements OnInit {
 
         console.log('warningdata: ', this.warningdata);
       });
+      this.searchEnded = true;
     }
 
     if (this.floodToggleSet) {
@@ -74,7 +86,9 @@ export class WarningsPage implements OnInit {
         this.warningdata = this.sortingArrayByDateDescending(this.warningdata);
 
         console.log('warningdata: ', this.warningdata);
+        this.searchEnded = true;
       });
+      this.searchEnded = true;
     }
 
     if (this.stormToggleSet) {
@@ -88,6 +102,7 @@ export class WarningsPage implements OnInit {
 
         console.log('warningdata: ', this.warningdata);
       });
+      this.searchEnded = true;
     }
   }
 
@@ -162,6 +177,18 @@ export class WarningsPage implements OnInit {
     });
 
     return array;
+  }
+
+  showToast(msg: string) {
+    this.toast = this.toastController.create({
+      message: msg,
+      animated: true,
+      showCloseButton: true,
+      duration: 2500
+    }).then((toastData) => {
+      console.log(toastData);
+      toastData.present();
+    });
   }
 
 }
